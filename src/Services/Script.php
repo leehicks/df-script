@@ -162,9 +162,9 @@ class Script extends BaseRestService
         $paths = array_keys((array)array_get($this->getApiDoc(), 'paths'));
         foreach ($paths as $path) {
             // drop service from path
-            if (!empty($path = ltrim(strstr(ltrim($path, '/'), '/'), '/'))) {
+            if (!empty($path = ltrim($path, '/'))) {
                 $list[] = $path;
-                $path = explode("/", $path);
+                $path = explode('/', $path);
                 end($path);
                 while ($level = prev($path)) {
                     $list[] = $level . '/*';
@@ -220,8 +220,9 @@ class Script extends BaseRestService
             $content = array_get($result, 'content');
             $contentType = array_get($result, 'content_type');
             $status = array_get($result, 'status_code', HttpStatusCodeInterface::HTTP_OK);
+            $headers = (array)array_get($result, 'headers');
 
-            return ResponseFactory::create($content, $contentType, $status);
+            return ResponseFactory::create($content, $contentType, $status, $headers);
         }
 
         // otherwise assume raw content

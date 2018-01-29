@@ -92,6 +92,7 @@ abstract class ExecutedEngine extends BaseEngineAdapter
      * @param array  $engineArguments An array of arguments to pass when executing the string
      *
      * @return mixed
+     * @throws InternalServerErrorException
      */
     public function executeScript($path, $identifier, array &$data = [], array $engineArguments = [])
     {
@@ -136,6 +137,7 @@ abstract class ExecutedEngine extends BaseEngineAdapter
 
     protected function getWritablePath($identifier)
     {
+        $identifier = uniqid($identifier . "_", true);
         $filePath = storage_path('scripting' . DIRECTORY_SEPARATOR . $identifier);
         if ($this->fileExtension) {
             $filePath .= '.' . $this->fileExtension;
